@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formation en ligne</title>
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,sans-serif;background:#f4f6fb;color:#1d2433}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:#1e3a8a;color:#fff}
+h1{font-size:1.2rem;margin:0}
+h2{margin:0 0 12px;font-size:1.15rem}
+h3{margin:14px 0 8px;font-size:1rem}
+main{max-width:1000px;margin:24px auto;padding:0 16px;display:grid;gap:20px}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px #0001}
+.narrow{max-width:420px;margin:40px auto}
+form{display:grid;gap:10px}
+input,textarea,button{font:inherit;padding:10px;border-radius:8px;border:1px solid #ccd}
+button{background:#1e3a8a;color:#fff;border:0;cursor:pointer}
+button.danger{background:#b91c1c}
+button.light,.btn{background:#eef2ff;color:#1e3a8a;border:0;text-decoration:none;padding:8px 12px;border-radius:8px;display:inline-block;cursor:pointer}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.item{display:grid;gap:8px;align-content:start;border:1px solid #e5e7eb;border-radius:10px;padding:12px}
+.item iframe,.item video{width:100%;aspect-ratio:16/9;border:0;border-radius:8px}
+.contacts{display:flex;flex-wrap:wrap;gap:8px}
+.muted{color:#667085}
+.error{color:#b91c1c;min-height:1em}
+.code{font:600 1.05rem monospace;background:#fef9c3;padding:10px;border-radius:8px}
+.code:empty{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎓 Formation en ligne</h1>
+  <button id="logout" class="light" hidden>Déconnexion</button>
+</header>
+<main id="app"></main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
