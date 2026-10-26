@@ -189,11 +189,35 @@ function bindAdmin() {
 }
 
 // ---------- Démarrage ----------
-logoutBtn.onclick = async () => {
+async function endSession() {
   await rpc("logout", { p_token: token }).catch(() => {});
   localStorage.removeItem("token");
   token = null;
   showLogin();
+}
+
+// Affiché une seule fois à l'admin avant la déconnexion
+function showBackupCode(code) {
+  logoutBtn.hidden = true;
+  app.innerHTML = `
+    <section class="card narrow">
+      <h2>Code de secours administrateur</h2>
+      <p class="muted">Notez ce code : il ne sera plus affiché. Il vous permettra de vous reconnecter (valable 30 jours, usage unique).</p>
+      <p id="backup" class="code"></p>
+      <button id="confirm-logout">J'ai noté le code, me déconnecter</button>
+    </section>`;
+  $("#backup").textContent = code;
+  $("#confirm-logout").onclick = endSession;
+}
+
+logoutBtn.onclick = async () => {
+  try {
+    const admin = await rpc("is_admin", { p_token: token });
+    if (!admin) return endSession();
+    showBackupCode(await rpc("admin_prepare_logout", { p_token: token }));
+  } catch (err) {
+    alert("Déconnexion impossible : " + err.message);
+  }
 };
 
 (async () => {
