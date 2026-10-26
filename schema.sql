@@ -110,3 +110,18 @@ begin
   if not public.is_admin(p_token) then raise exception 'Accès réservé à l''administrateur'; end if;
   delete from public.videos where id = p_id;
 end $$;
+
+-- Déconnexion admin : génère un code de secours (30 jours, usage unique), invalide les anciens
+create or replace function public.admin_prepare_logout(p_token uuid)
+returns text language plpgsql security definer set search_path = public, extensions as $$
+declare
+  v_phone text;
+  v_code text := upper(encode(gen_random_bytes(4), 'hex'));
+begin
+  if not public.is_admin(p_token) then raise exception 'Accès réservé à l''administrateur'; end if;
+  select s.phone into v_phone from public.sessions s where s.token = p_token;
+  update public.access_codes set used_at = now() where phone = v_phone and used_at is null;
+  insert into public.access_codes (phone, code_hash, expires_at)
+  values (v_phone, encode(digest(v_code, 'sha256'), 'hex'), now() + interval '30 days');
+  return v_code;
+end $$;
